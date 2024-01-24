@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  *
  */
-enum LogLevel {
+enum class LogLevel {
 
     TRACE = 1,
     DEBUG,
@@ -19,9 +19,9 @@ enum LogLevel {
     OFF
 
 };
-
-enum LogOutMode {
+enum class LogOutMode {
     TERMINAL = 1,
     FILE,
     WIDGET
 };
+

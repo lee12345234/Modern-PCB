@@ -20,11 +20,11 @@
 
 //------------------------------------------Log Base----------------------------
 #define LOG(DEBUG,...)  \
-        GetLogSingle(LogLevel::DEBUG,LogOutMode::WIDGET,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
-        GetLogSingle()->OutPutLog();
+        Log::GetLogSingle(LogLevel::DEBUG,LogOutMode::TERMINAL,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
+        Log:: GetLogSingle()->OutPutLog();
 
 #define LOG(TRACE,...)  \
-        GetLogSingle(LogLevel::TRACE,LogOutMode::WIDGET,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
+        Log::GetLogSingle(LogLevel::TRACE,LogOutMode::TERMINAL,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
         GetLogSingle()->OutPutLog();
 
 #define LOG_DEBUG(...) \
@@ -40,16 +40,16 @@ private:
     Log(const Log&) = delete;
 
 public:
-    Log* GetLogSingle(const LogLevel level, LogOutMode = LogOutMode::FILE, std::string file = "./CAD/Log.txt");
-    Log* GetLogSingle();
-    std::stringstream& getLogStream();
+    static Log* GetLogSingle(const LogLevel level, LogOutMode logmode = LogOutMode::TERMINAL, std::string file = "");
+    static Log* GetLogSingle();
+    std::stringstream& GetLogStream();
     ~Log();
-private:
+public:
 
     //set Log parameter
-    void setLogOutMode(const LogOutMode logmode);
-    void setLogLevel(const LogLevel level);
-    int setLogFile(const std::string& Logfile);
+    void SetLogOutMode(const LogOutMode logmode);
+    void SetLogLevel(const LogLevel level);
+    int SetLogFile(const std::string& Logfile);
 
     //outPut log target
     virtual int OutPutLogToTerminal();
@@ -65,3 +65,4 @@ private:
     std::string m_file{ "" };
     static Log* m_singleLog;
 };
+

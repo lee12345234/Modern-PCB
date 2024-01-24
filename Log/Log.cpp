@@ -1,26 +1,26 @@
 #include "Log.h"
-
+#include <iostream>
 Log* Log::m_singleLog = nullptr;
 
 Log::Log(const LogLevel level, LogOutMode logmode = LogOutMode::TERMINAL, std::string file = "")
 {
     if (logmode == LogOutMode::FILE && !file.empty())
     {
-        setLogFile(file);
+        SetLogFile(file);
     }
     else if (logmode == LogOutMode::FILE && file.empty())
     {
-        m_logStream << "Time:" << __DATE__ << "  Function:" << __FUNCTION__ << " LogMode:" << logmode << "file:" << file;
+        m_logStream << "Time:" << __DATE__ << "  Function:" << __FUNCTION__ << " LogMode:" << (int)logmode << "file:" << file;
 
     }
     else if (logmode != LogOutMode::FILE && !file.empty())
     {
-        m_logStream << "Time:" << __DATE__ << "  Function:" << __FUNCTION__ << " LogMode:" << logmode << "file:" << file;
+        m_logStream << "Time:" << __DATE__ << "  Function:" << __FUNCTION__ << " LogMode:" << (int)logmode << "file:" << file;
     }
 
 
-    setLogOutMode(logmode);
-    setLogLevel(level);
+    SetLogOutMode(logmode);
+    SetLogLevel(level);
 
 }
 
@@ -30,7 +30,7 @@ Log* Log::GetLogSingle()
     return m_singleLog;
 }
 
-Log* Log::GetLogSingle(const LogLevel level, LogOutMode logmode = LogOutMode::TERMINAL, std::string file = "")
+Log* Log::GetLogSingle(const LogLevel level, LogOutMode logmode, std::string file)
 {
     if (m_singleLog == nullptr)
     {
@@ -39,14 +39,14 @@ Log* Log::GetLogSingle(const LogLevel level, LogOutMode logmode = LogOutMode::TE
     return m_singleLog;
 }
 
-void Log::setLogOutMode(const LogOutMode mode)
+void Log::SetLogOutMode(const LogOutMode mode)
 {
     m_outMode = mode;
 
 }
 
 
-int Log::setLogFile(const std::string& file)
+int Log::SetLogFile(const std::string& file)
 {
 
     m_file = file;
@@ -71,16 +71,44 @@ int Log::setLogFile(const std::string& file)
         }
 #endif
     }
+    return 1;
 
 }
 
-void Log::setLogLevel(const LogLevel level)
+int Log::OutPutLogToTerminal()
+{
+
+
+    std::cout << m_logStream.str() << std::endl;
+    return 0;
+}
+
+int Log::OutPutLogToWidget()
+{
+    return 0;
+}
+
+int Log::OutPutLogToFIle()
+{
+    return 0;
+}
+
+int Log::OutPutLog()
+{
+    return 0;
+}
+
+void Log::SetLogLevel(const LogLevel level)
 {
     m_level = level;
 }
 
-std::stringstream& Log::getLogStream()
+std::stringstream& Log::GetLogStream()
 {
 
     return m_logStream;
+}
+
+Log::~Log()
+{
 }
