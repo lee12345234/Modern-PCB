@@ -1,3 +1,6 @@
 message("LogTest---${PROJECT_SOURCE_DIR}")
-//set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-add_executable(LogTest ./Log.*) 
+set(LogSource ./Log/Log.cpp)
+set(LogDirectory ./Log/Log.h 
+              ./Log/LogMacro.h)
+aux_source_directory(. DIR_SRCS)
+add_executable(LogTest LogTest.cpp) 
