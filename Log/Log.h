@@ -16,31 +16,30 @@
 #include<sstream>
 #include<fstream>
 #include<cstdio>
+#include<map>
 #include"LogMacro.h"
 
 //------------------------------------------Log Base----------------------------
-#define LOG(DEBUG,...)  \
-        Log::GetLogSingle(LogLevel::DEBUG,LogOutMode::TERMINAL,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
+#define LOG(LEVEL,...)  \
+        Log::GetLogSingle(LEVEL)->GetLogStream() <<__DATE__ << " "<< __TIME__ <<" " << __FILE__ << " "<< __FUNCTION__ <<" ["<< __LINE__<< "] " <<__VA_ARGS__; \
         Log:: GetLogSingle()->OutPutLog();
 
-#define LOG(TRACE,...)  \
-        Log::GetLogSingle(LogLevel::TRACE,LogOutMode::TERMINAL,std::string(""))->GetLogStream() <<__FILE__<<__FUNCTION__<<__VA_ARGS__ ; \
-        GetLogSingle()->OutPutLog();
 
 #define LOG_DEBUG(...) \
-        LOG(DEBUG,__VA_ARGS__)
+        LOG(LogLevel::DEBUG,__VA_ARGS__)
 
 #define LOG_TRACE(...) \
-        LOG(TRACE,__VA_ARGS__)
+        LOG(LogLevel::TRACE,__VA_ARGS__)
 
 class Log {
 
 private:
-    Log(const LogLevel level, LogOutMode logmode, std::string file);
+    Log(const LogLevel level, LogOutMode logmode);
+    Log();
     Log(const Log&) = delete;
 
 public:
-    static Log* GetLogSingle(const LogLevel level, LogOutMode logmode = LogOutMode::TERMINAL, std::string file = "");
+    static Log* GetLogSingle(const LogLevel level, LogOutMode logmode = LogOutMode::TERMINAL);
     static Log* GetLogSingle();
     std::stringstream& GetLogStream();
     ~Log();
@@ -58,8 +57,13 @@ public:
     int OutPutLog();
 
 private:
+    std::map<LogLevel, std::string> m_mapModeToString{ {LogLevel::DEBUG,"[DEBUG]"},{LogLevel::ERROR,"[ERROR]"},{LogLevel::WARN,"[WARN]"},
+                                                       {LogLevel::TRACE,"TRACE"},{LogLevel::INFO,"[INFO]"}
+    };
+
+private:
     std::stringstream m_logStream;
-    std::ifstream     m_fileStream;
+    std::fstream     m_fileStream;
     LogOutMode m_outMode{ LogOutMode::FILE };
     LogLevel   m_level{ LogLevel::DEBUG };
     std::string m_file{ "" };
