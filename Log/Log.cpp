@@ -51,29 +51,6 @@ int Log::SetLogFile(const std::string& file)
 {
 
     m_fileStream.open(file, std::ios::app);
-    if (!m_fileStream.is_open())
-    {
-
-#ifdef _WIN32
-        auto  handle = CreateFile(m_file.c_str(), GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_ARCHIVE, NULL);
-        if (handle == INVALID_HANDLE_VALUE)
-        {
-            m_logStream << "create file failed";
-            return 0;
-        }
-        
-
-
-#elif _linux
-        auto ret = creat(m_file.c_str(), S_IRUSR | S_IWUSR);
-        if (ret < 0)
-        {
-            m_logStream << std::string(strerror(errno));
-            return 0;
-        }
-#endif
-    }
-
     m_fileStream.close();
     m_file = file;
     SetLogOutMode(LogOutMode::FILE);
