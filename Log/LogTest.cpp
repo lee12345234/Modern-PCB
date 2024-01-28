@@ -5,15 +5,19 @@
  * \author liyingtai
  * \date   January 2024
  *********************************************************************/
-#include "Log.h"
 
-int main()
+#include <QApplication>
+#include "Log.h"
+#include"Mainwindow/MPMainwindow.h"
+int main(int argc,char*argv[])
 {
-    LOG_DEBUG("okokokok");
-    LOG_DEBUG("haode");
+    QApplication app(argc, argv);
     auto log = Log::GetLogSingle();
     log->SetLogFile("./log.txt");
     LOG_DEBUG("okokokok");
     //log->SetLogOutMode(LogOutMode::TERMINAL);
     LOG_DEBUG("liyingtai");
+    MPMainwindow a;
+    a.show();
+    return app.exec();
 }
