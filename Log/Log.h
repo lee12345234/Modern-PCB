@@ -31,6 +31,15 @@
 #define LOG_TRACE(...) \
         LOG(LogLevel::TRACE,__VA_ARGS__)
 
+#define LOG_INFO(...) \
+        LOG(LogLevel::INFO,__VA_ARGS__)
+
+#define LOG_ERROR(...) \
+        LOG(LogLevel::ERROR,__VA_ARGS__)
+
+#define LOG_WARN(...) \
+        LOG(LogLevel::WARN,__VA_ARGS__)
+
 class Log {
 
 private:
